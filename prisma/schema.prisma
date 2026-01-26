@@ -1,0 +1,40 @@
+// prisma/schema.prisma
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite" // Changed from "postgresql" for free/easy setup
+
+}
+
+model Estimate {
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  
+  // Customer Info
+  customerName String
+  email        String
+  phone        String?
+
+  // Project Specs
+  serviceType  String   @default("Digital Printing")
+  hasImage     Boolean? // Matches your null/true/false logic
+  
+  // Dimensions & Details
+  width        String?
+  height       String?
+  unit         String?
+  dimensions   String?  // You had this redundant with w/h, but we'll keep it
+  quantity     String?
+  
+  // Materials
+  paperStock   String   @default("Standard 80lb")
+  finish       String   @default("Matte")
+  notes        String?
+
+  // File Storage
+  imagePath    String?  // We store the location of the file here
+}
