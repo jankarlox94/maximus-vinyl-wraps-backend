@@ -1,70 +1,32 @@
-import { Injectable } from '@nestjs/common';
-import * as nodemailer from 'nodemailer';
-import { ConfigService } from '@nestjs/config';
+// mail.service.ts
+import { Injectable, Logger } from '@nestjs/common';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class MailService {
-  private transporter;
+  constructor(private readonly mailerService: MailerService) {}
 
-  constructor(private configService: ConfigService) {
-    this.transporter = nodemailer.createTransport({
-      host: this.configService.get('EMAIL_HOST'),
-      port: this.configService.get('EMAIL_PORT'),
-      secure: false, // true for 465, false for other ports
-      auth: {
-        user: this.configService.get('EMAIL_USER'),
-        pass: this.configService.get('EMAIL_PASS'),
-      },
-    });
-  }
-
-  async sendPrintOrder(formData: any, file: Express.Multer.File) {
-    const {
-      customerName,
-      email,
-      phone,
-      serviceType,
-      quantity,
-      paperStock,
-      dimensions,
-      finish,
-      notes,
-      image,
-    } = formData;
-
-    const mailOptions = {
-      from: `"Maximus Vinyl Wraps" <${this.configService.get('MAIL_FROM')}>`,
-      to: this.configService.get('MANAGER_EMAIL'),
-      subject: `New Print Order: ${customerName}`,
-      text: `
-        NEW ORDER SUBMISSION
-        --------------------------------
-        CUSTOMER DETAILS
-        Name:  ${customerName}
-        Email: ${email}
-        Phone: ${phone}
-
-        ORDER SPECS
-        Service Type: ${serviceType}
-        Quantity:     ${quantity}
-        Paper Stock:  ${paperStock}
-        Dimensions:   ${dimensions}
-        Finish:       ${finish}
-
-        NOTES
-        ${notes || 'None'}
-
-        ATTACHMENT
-        ${image ? 'Image file included with submission.' : 'No image uploaded.'}
-        `,
-      attachments: [
-        {
-          filename: file.originalname,
-          content: file.buffer,
-        },
-      ],
-    };
-
-    return await this.transporter.sendMail(mailOptions);
+  async sendEstimateEmail(
+    to: string,
+    customer_email: string,
+    imageUrl: string,
+  ) {
+    const logger = new Logger();
+    logger.debug(`This application is on mail service`);
+    try {
+      logger.debug(`This application is on mail service try block`);
+      await this.mailerService.sendMail({
+        to,
+        subject: 'New Design Estimate Created',
+        html: `
+        <h3>Hello ${customer_email},</h3>
+        <p>Your new wallpaper design estimate is ready.</p>
+        <p><a href="${imageUrl}">Click here to view the design image</a></p>
+      `,
+      });
+      logger.debug(`This application is on mail service end of try block`);
+    } catch (e) {
+      logger.debug(`This application is on mail service error,${e}`);
+    }
   }
 }
