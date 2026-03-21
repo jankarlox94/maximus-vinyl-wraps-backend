@@ -93,9 +93,13 @@ export class PrintJobsService {
       this.mailService
         .sendQuoteConfirmationToCustomer(payload, processedItems)
         .catch((e) => this.logger.error(e));
-      // this.whatsappService
-      //   .notifyAdminNewQuote(orderRecord.id, payload.customerName)
-      //   .catch((e) => this.logger.error(e));
+      this.whatsappService
+        .notifyAdminNewQuote(
+          orderRecord.id,
+          payload.customerName,
+          processedItems,
+        )
+        .catch((e) => this.logger.error(e));
 
       return {
         message: 'Order and files processed successfully',

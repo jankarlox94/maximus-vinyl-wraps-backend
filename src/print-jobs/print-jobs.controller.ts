@@ -38,11 +38,15 @@ export class PrintJobsController {
     if (files && files.length > 0) {
       for (const file of files) {
         if (file.size > MAX_SIZE) {
+          this.logger.debug(`File ${file.originalname} exceeds the 8MB limit.`);
           throw new BadRequestException(
             `File ${file.originalname} exceeds the 8MB limit.`,
           );
         }
         if (!ALLOWED_TYPES.includes(file.mimetype)) {
+          this.logger.debug(
+            `File ${file.originalname} has an invalid type. Only PNG, JPEG,PJG and PDF are allowed.`,
+          );
           throw new BadRequestException(
             `File ${file.originalname} has an invalid type. Only PNG, JPEG, JPG, and PDF are allowed.`,
           );
@@ -67,6 +71,7 @@ export class PrintJobsController {
       // The PrintJobsService will then loop through these items and upload them via Supabase.
       return await this.printJobsService.create(printJobPayload, files);
     } catch (e) {
+      this.logger.error(`error in catcher${e}`);
       this.logger.error(`Failed to parse order payload: ${e.message}`, e.stack);
       throw new BadRequestException('Invalid payload data or malformed JSON.');
     }
