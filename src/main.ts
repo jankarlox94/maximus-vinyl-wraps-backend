@@ -12,6 +12,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   app.enableCors({
     origin: [
+      'https://maximus-vinyl-wraps-backend.onrender.com',
       'http://localhost:5173', // Your local Vite/React frontend
       'http://localhost:3000',
       'http://[::1]:3000',
