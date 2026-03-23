@@ -17,12 +17,12 @@ import { join } from 'path';
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({
         transport: {
-          host: config.get('SMTP_HOST'),
-          port: config.get<number>('SMTP_PORT'),
+          host: config.get('BREVO_SMTP_HOST'),
+          port: config.get<number>('BREVO_SMTP_PORT'),
           secure: false, // true for 465, false for other ports
           auth: {
-            user: config.get('SMTP_USER'),
-            pass: config.get('SMTP_PASS'),
+            user: config.get('BREVO_SMTP_USER'),
+            pass: config.get('BREVO_SMTP_PASS'),
           },
         },
         defaults: {
