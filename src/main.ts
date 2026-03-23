@@ -20,13 +20,12 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
-  app.setGlobalPrefix('api');
   app.use(json({ limit: '50mb' }));
   // app.useBodyParser('json', { limit: '10mb' });
   app.use(urlencoded({ extended: true, limit: '50mb' }));
   // const server = app.getHttpAdapter();
   // const router = server.getInstance();
-  const port = 10000;
+  const port = process.env.PORT ?? 3000;
   await app.listen(port, '0.0.0.0');
   //  await app.listen(process.env.PORT ?? 3000);
   const logger = new Logger();
