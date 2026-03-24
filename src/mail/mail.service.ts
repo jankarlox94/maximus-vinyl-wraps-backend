@@ -161,7 +161,7 @@ export class MailService {
       this.logger.debug(`Customer confirmation email successfully sent.`);
     } catch (e) {
       this.logger.error(
-        `Failed to send customer confirmation email: ${e.message}`,
+        `Failed to send customer confirmation email: ${e.message} Brevo SMTP Host: ${this.config.get('BREVO_SMTP_HOST')}`,
       );
     }
   }
