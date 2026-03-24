@@ -84,7 +84,7 @@ export class MailService {
 
     try {
       await this.mailerService.sendMail({
-        to: 'joflorez@utp.edu.co', // <-- UPDATE to shop email
+        to: 'giancarlosanchez.dev@icloud.com', // <-- UPDATE to shop email
         replyTo: payload.customerEmail,
         subject: `🚨 New Quote Request from ${payload.customerName}`,
         html: emailHtml,
