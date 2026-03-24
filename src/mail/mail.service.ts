@@ -40,9 +40,9 @@ export class MailService {
   // --- 2. Internal Notification (For Your Team) ---
   async sendQuoteRequestInternal(payload: any, processedItems: any[]) {
     this.logger.debug(
-      `Sending internal quote request email for: ${payload.customerName}, Brevo SMTP Host: ${this.config.get('BREVO_SMTP_HOST')}`,
+      `Sending internal quote request email for: ${payload.customerName}, Brevo SMTP Host: ${this.config.get('SMTP_HOST')}`,
     );
-    this.logger.debug(`Brevo SMTP Host: ${this.config.get('BREVO_SMTP_HOST')}`);
+    this.logger.debug(`Brevo SMTP Host: ${this.config.get('SMTP_HOST')}`);
 
     const itemsHtml = processedItems
       .map(
@@ -161,7 +161,7 @@ export class MailService {
       this.logger.debug(`Customer confirmation email successfully sent.`);
     } catch (e) {
       this.logger.error(
-        `Failed to send customer confirmation email: ${e.message} Brevo SMTP Host: ${this.config.get('BREVO_SMTP_HOST')}`,
+        `Failed to send customer confirmation email: ${e.message} Brevo SMTP Host: ${this.config.get('SMTP_HOST')}`,
       );
     }
   }
