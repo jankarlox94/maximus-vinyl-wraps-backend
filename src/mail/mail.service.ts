@@ -1,12 +1,16 @@
 // mail.service.ts
 import { Injectable, Logger } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MailService {
   private readonly logger = new Logger(MailService.name);
 
-  constructor(private readonly mailerService: MailerService) {}
+  constructor(
+    private readonly mailerService: MailerService,
+    public config: ConfigService,
+  ) {}
 
   // --- 1. Existing Estimate Method ---
   async sendEstimateEmail(
@@ -36,7 +40,7 @@ export class MailService {
   // --- 2. Internal Notification (For Your Team) ---
   async sendQuoteRequestInternal(payload: any, processedItems: any[]) {
     this.logger.debug(
-      `Sending internal quote request email for: ${payload.customerName}`,
+      `Sending internal quote request email for: ${payload.customerName}, Brevo SMTP Host: ${this.config.get('BREVO_SMTP_HOST')}`,
     );
 
     const itemsHtml = processedItems
