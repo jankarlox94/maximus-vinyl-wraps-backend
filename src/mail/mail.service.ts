@@ -42,6 +42,7 @@ export class MailService {
     this.logger.debug(
       `Sending internal quote request email for: ${payload.customerName}, Brevo SMTP Host: ${this.config.get('BREVO_SMTP_HOST')}`,
     );
+    this.logger.debug(`Brevo SMTP Host: ${this.config.get('BREVO_SMTP_HOST')}`);
 
     const itemsHtml = processedItems
       .map(
