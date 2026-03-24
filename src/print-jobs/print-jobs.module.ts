@@ -22,7 +22,7 @@ import { join } from 'path';
           secure: false, // true for 465, false for other ports
           auth: {
             user: config.get('BREVO_SMTP_USER'),
-            pass: config.get('BREVO_SMTP_PASS'),
+            pass: config.get('BREVO_SMTP_PASSWORD'),
           },
         },
         defaults: {
