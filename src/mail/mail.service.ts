@@ -2,15 +2,22 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
+import { BrevoClient } from '@getbrevo/brevo';
 
 @Injectable()
 export class MailService {
   private readonly logger = new Logger(MailService.name);
+  private client: BrevoClient;
 
   constructor(
     private readonly mailerService: MailerService,
     public config: ConfigService,
-  ) {}
+  ) {
+    // Single initialization for all Brevo services
+    this.client = new BrevoClient({
+      apiKey: process.env.BREVO_API_KEY || '',
+    });
+  }
 
   // --- 1. Existing Estimate Method ---
   async sendEstimateEmail(
@@ -83,12 +90,22 @@ export class MailService {
     `;
 
     try {
-      await this.mailerService.sendMail({
-        to: 'giancarlosanchez.dev@icloud.com', // <-- UPDATE to shop email
-        replyTo: payload.customerEmail,
-        subject: `🚨 New Quote Request from ${payload.customerName}`,
-        html: emailHtml,
+      // await this.mailerService.sendMail({
+      //   to: 'giancarlosanchez.dev@icloud.com', // <-- UPDATE to shop email
+      //   replyTo: payload.customerEmail,
+      //   subject: `🚨 New Quote Request from ${payload.customerName}`,
+      //   html: emailHtml,
+      // });
+      await this.client.transactionalEmails.sendTransacEmail({
+        subject: `🚨 New Quote Request from ${payload.customerName}, Customer Email: ${payload.customerEmail}`,
+        sender: {
+          name: 'Maximus System',
+          email: 'giancarlosanchez.dev@icloud.com',
+        },
+        to: [{ email: `giancarlosanchez.dev@icloud.com`, name: 'Admin' }],
+        htmlContent: emailHtml,
       });
+
       this.logger.debug(`Internal quote email successfully sent.`);
     } catch (e) {
       this.logger.error(`Failed to send internal quote email: ${e.message}`);
@@ -153,11 +170,22 @@ export class MailService {
     `;
 
     try {
-      await this.mailerService.sendMail({
-        to: payload.customerEmail,
+      // await this.mailerService.sendMail({
+      //   to: payload.customerEmail,
+      //   subject: `Your Print Quote Request is Under Review - Maximus Vinyl`,
+      //   html: emailHtml,
+      // });
+
+      await this.client.transactionalEmails.sendTransacEmail({
         subject: `Your Print Quote Request is Under Review - Maximus Vinyl`,
-        html: emailHtml,
+        sender: {
+          name: 'Maximus System',
+          email: 'giancarlosanchez.dev@icloud.com',
+        },
+        to: [{ email: payload.customerEmail, name: 'Admin' }],
+        htmlContent: emailHtml,
       });
+
       this.logger.debug(`Customer confirmation email successfully sent.`);
     } catch (e) {
       this.logger.error(
