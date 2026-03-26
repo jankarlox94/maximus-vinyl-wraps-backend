@@ -33,7 +33,7 @@ exports.PrintJobsModule = PrintJobsModule = __decorate([
                         secure: false,
                         auth: {
                             user: config.get('SMTP_USER'),
-                            pass: config.get('SMTP_PASS'),
+                            pass: config.get('SMTP_PASSWORD'),
                         },
                     },
                     defaults: {

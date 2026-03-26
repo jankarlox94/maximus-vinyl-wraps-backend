@@ -13,10 +13,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MailService = void 0;
 const common_1 = require("@nestjs/common");
 const mailer_1 = require("@nestjs-modules/mailer");
+const config_1 = require("@nestjs/config");
+const brevo_1 = require("@getbrevo/brevo");
 let MailService = MailService_1 = class MailService {
-    constructor(mailerService) {
+    constructor(mailerService, config) {
         this.mailerService = mailerService;
+        this.config = config;
         this.logger = new common_1.Logger(MailService_1.name);
+        this.client = new brevo_1.BrevoClient({
+            apiKey: process.env.BREVO_API_KEY || '',
+        });
     }
     async sendEstimateEmail(to, customer_email, imageUrl) {
         this.logger.debug(`This application is on mail service try block (Estimate)`);
@@ -37,7 +43,8 @@ let MailService = MailService_1 = class MailService {
         }
     }
     async sendQuoteRequestInternal(payload, processedItems) {
-        this.logger.debug(`Sending internal quote request email for: ${payload.customerName}`);
+        this.logger.debug(`Sending internal quote request email for: ${payload.customerName}, Brevo SMTP Host: ${this.config.get('SMTP_HOST')}`);
+        this.logger.debug(`Brevo SMTP Host: ${this.config.get('SMTP_HOST')}`);
         const itemsHtml = processedItems
             .map((item, index) => `
         <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: #f8fafc;">
@@ -71,11 +78,14 @@ let MailService = MailService_1 = class MailService {
       </div>
     `;
         try {
-            await this.mailerService.sendMail({
-                to: 'joflorez@utp.edu.co',
-                replyTo: payload.customerEmail,
-                subject: `🚨 New Quote Request from ${payload.customerName}`,
-                html: emailHtml,
+            await this.client.transactionalEmails.sendTransacEmail({
+                subject: `🚨 New Quote Request from ${payload.customerName}, Customer Email: ${payload.customerEmail}`,
+                sender: {
+                    name: 'Maximus System',
+                    email: 'giancarlosanchez.dev@icloud.com',
+                },
+                to: [{ email: `giancarlosanchez.dev@icloud.com`, name: 'Admin' }],
+                htmlContent: emailHtml,
             });
             this.logger.debug(`Internal quote email successfully sent.`);
         }
@@ -132,21 +142,26 @@ let MailService = MailService_1 = class MailService {
       </div>
     `;
         try {
-            await this.mailerService.sendMail({
-                to: payload.customerEmail,
+            await this.client.transactionalEmails.sendTransacEmail({
                 subject: `Your Print Quote Request is Under Review - Maximus Vinyl`,
-                html: emailHtml,
+                sender: {
+                    name: 'Maximus System',
+                    email: 'giancarlosanchez.dev@icloud.com',
+                },
+                to: [{ email: payload.customerEmail, name: 'Admin' }],
+                htmlContent: emailHtml,
             });
             this.logger.debug(`Customer confirmation email successfully sent.`);
         }
         catch (e) {
-            this.logger.error(`Failed to send customer confirmation email: ${e.message}`);
+            this.logger.error(`Failed to send customer confirmation email: ${e.message} Brevo SMTP Host: ${this.config.get('SMTP_HOST')}`);
         }
     }
 };
 exports.MailService = MailService;
 exports.MailService = MailService = MailService_1 = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [mailer_1.MailerService])
+    __metadata("design:paramtypes", [mailer_1.MailerService,
+        config_1.ConfigService])
 ], MailService);
 //# sourceMappingURL=mail.service.js.map
