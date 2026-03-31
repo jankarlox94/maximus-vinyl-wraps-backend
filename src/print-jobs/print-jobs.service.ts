@@ -115,6 +115,29 @@ export class PrintJobsService {
       );
     }
   }
+
+  async findAllOrders() {
+    // Fetch orders and join with order_items using the foreign key
+    const { data, error } = await this.supabaseService
+      .getClient()
+      .from('orders')
+      .select(
+        `
+      *,
+      order_items (*) 
+    `,
+      )
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      this.logger.error(`Supabase Fetch Error: ${error.message}`);
+      throw new InternalServerErrorException(
+        'Error fetching data from Supabase',
+      );
+    }
+
+    return data;
+  }
 }
 
 // import {

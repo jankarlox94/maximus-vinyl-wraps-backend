@@ -13,4 +13,5 @@ export declare class PrintJobsService {
             orderId: any;
         };
     }>;
+    findAllOrders(): Promise<any[]>;
 }

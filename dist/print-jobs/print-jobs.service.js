@@ -73,6 +73,21 @@ let PrintJobsService = PrintJobsService_1 = class PrintJobsService {
             throw new common_1.InternalServerErrorException('An error occurred while saving the project details.');
         }
     }
+    async findAllOrders() {
+        const { data, error } = await this.supabaseService
+            .getClient()
+            .from('orders')
+            .select(`
+      *,
+      order_items (*) 
+    `)
+            .order('created_at', { ascending: false });
+        if (error) {
+            this.logger.error(`Supabase Fetch Error: ${error.message}`);
+            throw new common_1.InternalServerErrorException('Error fetching data from Supabase');
+        }
+        return data;
+    }
 };
 exports.PrintJobsService = PrintJobsService;
 exports.PrintJobsService = PrintJobsService = PrintJobsService_1 = __decorate([

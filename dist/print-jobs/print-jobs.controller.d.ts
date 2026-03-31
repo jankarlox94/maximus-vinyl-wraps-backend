@@ -9,4 +9,5 @@ export declare class PrintJobsController {
             orderId: any;
         };
     }>;
+    getAdminDashboard(): Promise<any[]>;
 }

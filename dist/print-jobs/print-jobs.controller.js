@@ -59,6 +59,16 @@ let PrintJobsController = PrintJobsController_1 = class PrintJobsController {
             throw new common_1.BadRequestException('Invalid payload data or malformed JSON.');
         }
     }
+    async getAdminDashboard() {
+        this.logger.debug('Admin dashboard data requested.');
+        try {
+            return await this.printJobsService.findAllOrders();
+        }
+        catch (e) {
+            this.logger.error(`Failed to fetch dashboard data: ${e.message}`);
+            throw new common_1.InternalServerErrorException('Could not retrieve orders.');
+        }
+    }
 };
 exports.PrintJobsController = PrintJobsController;
 __decorate([
@@ -70,6 +80,12 @@ __decorate([
     __metadata("design:paramtypes", [Object, Array]),
     __metadata("design:returntype", Promise)
 ], PrintJobsController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)('admin/dashboard'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], PrintJobsController.prototype, "getAdminDashboard", null);
 exports.PrintJobsController = PrintJobsController = PrintJobsController_1 = __decorate([
     (0, common_1.Controller)('print-jobs'),
     __metadata("design:paramtypes", [print_jobs_service_1.PrintJobsService])

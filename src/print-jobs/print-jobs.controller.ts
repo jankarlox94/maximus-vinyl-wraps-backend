@@ -6,6 +6,8 @@ import {
   UploadedFiles,
   Logger,
   BadRequestException,
+  Get,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { PrintJobsService } from './print-jobs.service';
@@ -74,6 +76,18 @@ export class PrintJobsController {
       this.logger.error(`error in catcher${e}`);
       this.logger.error(`Failed to parse order payload: ${e.message}`, e.stack);
       throw new BadRequestException('Invalid payload data or malformed JSON.');
+    }
+  }
+
+  @Get('admin/dashboard')
+  // In a real production app, you would add a @UseGuards(AuthGuard, RolesGuard) here
+  async getAdminDashboard() {
+    this.logger.debug('Admin dashboard data requested.');
+    try {
+      return await this.printJobsService.findAllOrders();
+    } catch (e) {
+      this.logger.error(`Failed to fetch dashboard data: ${e.message}`);
+      throw new InternalServerErrorException('Could not retrieve orders.');
     }
   }
 }
