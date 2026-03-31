@@ -13,6 +13,7 @@ async function bootstrap() {
     const configService = app.get(config_1.ConfigService);
     app.enableCors({
         origin: [
+            'https://maximus-web-client.netlify.app',
             'https://maximus-vinyl-wraps-backend.onrender.com',
             'http://localhost:5173',
             'http://localhost:3000',

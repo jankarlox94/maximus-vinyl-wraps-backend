@@ -82,9 +82,9 @@ let MailService = MailService_1 = class MailService {
                 subject: `🚨 New Quote Request from ${payload.customerName}, Customer Email: ${payload.customerEmail}`,
                 sender: {
                     name: 'Maximus System',
-                    email: 'giancarlosanchez.dev@icloud.com',
+                    email: 'joflorez@utp.edu.co',
                 },
-                to: [{ email: `giancarlosanchez.dev@icloud.com`, name: 'Admin' }],
+                to: [{ email: `joflorez@utp.edu.co`, name: 'Admin' }],
                 htmlContent: emailHtml,
             });
             this.logger.debug(`Internal quote email successfully sent.`);
@@ -146,7 +146,7 @@ let MailService = MailService_1 = class MailService {
                 subject: `Your Print Quote Request is Under Review - Maximus Vinyl`,
                 sender: {
                     name: 'Maximus System',
-                    email: 'giancarlosanchez.dev@icloud.com',
+                    email: 'joflorez@utp.edu.co',
                 },
                 to: [{ email: payload.customerEmail, name: 'Admin' }],
                 htmlContent: emailHtml,
