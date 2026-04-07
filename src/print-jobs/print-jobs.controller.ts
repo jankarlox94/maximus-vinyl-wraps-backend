@@ -8,6 +8,8 @@ import {
   BadRequestException,
   Get,
   InternalServerErrorException,
+  Patch,
+  Param,
 } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { PrintJobsService } from './print-jobs.service';
@@ -90,6 +92,40 @@ export class PrintJobsController {
       throw new InternalServerErrorException('Could not retrieve orders.');
     }
   }
+
+  @Patch(':id/status')
+  async updateStatus(
+    @Param('id') orderId: string,
+    @Body('status') status: string,
+  ) {
+    this.logger.debug(
+      `Received request to update order ${orderId} to status: ${status}`,
+    );
+
+    // Basic validation to ensure a status was actually sent
+    if (!status) {
+      throw new BadRequestException('A new status must be provided.');
+    }
+
+    // Pass it down to the service
+    return await this.printJobsService.updateStatus(orderId, status);
+  }
+
+  // @Patch(':id/status')
+  // async updateStatus(@Param('id') id: string, @Body('status') status: string) {
+  //   // Validate that the status is one of your allowed flags
+  //   const validStatuses = [
+  //     'pending',
+  //     'on progress',
+  //     'ready for pickup',
+  //     'complete',
+  //   ];
+  //   if (!validStatuses.includes(status)) {
+  //     throw new BadRequestException('Invalid status flag provided.');
+  //   }
+
+  //   return await this.printJobsService.updateOrderStatus(id, status);
+  // }
 }
 
 // import {

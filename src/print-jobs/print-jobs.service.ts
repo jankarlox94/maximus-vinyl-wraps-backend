@@ -138,6 +138,51 @@ export class PrintJobsService {
 
     return data;
   }
+
+  async updateStatus(orderId: string, status: string) {
+    this.logger.debug(`Updating status for order ${orderId} to: ${status}`);
+
+    try {
+      const updatedOrder = await this.supabaseService.updateOrderStatus(
+        orderId,
+        status,
+      );
+
+      // Optional Future Enhancement:
+      // if (status === 'approved') {
+      //   await this.mailService.sendQuoteApprovedEmail(updatedOrder.customer_email);
+      // }
+
+      return {
+        message: 'Order status updated successfully',
+        data: updatedOrder,
+      };
+    } catch (error) {
+      this.logger.error(`Failed to update status: ${error.message}`);
+      throw new InternalServerErrorException(
+        'An error occurred while updating the order status.',
+      );
+    }
+  }
+
+  // async updateOrderStatus(orderId: string, newStatus: string) {
+  //   this.logger.debug(`Updating order ${orderId} to status: ${newStatus}`);
+
+  //   const { data, error } = await this.supabaseService
+  //     .getClient()
+  //     .from('orders')
+  //     .update({ status: newStatus })
+  //     .eq('id', orderId)
+  //     .select()
+  //     .single();
+
+  //   if (error) {
+  //     this.logger.error(`Supabase Update Error: ${error.message}`);
+  //     throw new InternalServerErrorException('Could not update order status');
+  //   }
+
+  //   return data;
+  // }
 }
 
 // import {

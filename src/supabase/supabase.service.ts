@@ -93,6 +93,23 @@ export class SupabaseService {
         'Failed to save order line items to database.',
       );
     }
+    return data;
+  }
+
+  // --- Update Order Status ---
+  async updateOrderStatus(orderId: string, status: string) {
+    const { data, error } = await this.supabase
+      .from('orders')
+      .update({ status: status })
+      .eq('id', orderId)
+      .select()
+      .single();
+
+    if (error) {
+      this.logger.error(`Supabase updateOrderStatus Error: ${error.message}`);
+      // Throw a standard NestJS error so the controller can catch it
+      throw new Error('Failed to update order status in the database.');
+    }
 
     return data;
   }
