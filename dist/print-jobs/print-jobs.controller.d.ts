@@ -10,4 +10,8 @@ export declare class PrintJobsController {
         };
     }>;
     getAdminDashboard(): Promise<any[]>;
+    updateStatus(orderId: string, status: string): Promise<{
+        message: string;
+        data: any;
+    }>;
 }

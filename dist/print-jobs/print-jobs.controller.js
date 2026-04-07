@@ -69,6 +69,13 @@ let PrintJobsController = PrintJobsController_1 = class PrintJobsController {
             throw new common_1.InternalServerErrorException('Could not retrieve orders.');
         }
     }
+    async updateStatus(orderId, status) {
+        this.logger.debug(`Received request to update order ${orderId} to status: ${status}`);
+        if (!status) {
+            throw new common_1.BadRequestException('A new status must be provided.');
+        }
+        return await this.printJobsService.updateStatus(orderId, status);
+    }
 };
 exports.PrintJobsController = PrintJobsController;
 __decorate([
@@ -86,6 +93,14 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PrintJobsController.prototype, "getAdminDashboard", null);
+__decorate([
+    (0, common_1.Patch)(':id/status'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)('status')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], PrintJobsController.prototype, "updateStatus", null);
 exports.PrintJobsController = PrintJobsController = PrintJobsController_1 = __decorate([
     (0, common_1.Controller)('print-jobs'),
     __metadata("design:paramtypes", [print_jobs_service_1.PrintJobsService])

@@ -88,6 +88,20 @@ let PrintJobsService = PrintJobsService_1 = class PrintJobsService {
         }
         return data;
     }
+    async updateStatus(orderId, status) {
+        this.logger.debug(`Updating status for order ${orderId} to: ${status}`);
+        try {
+            const updatedOrder = await this.supabaseService.updateOrderStatus(orderId, status);
+            return {
+                message: 'Order status updated successfully',
+                data: updatedOrder,
+            };
+        }
+        catch (error) {
+            this.logger.error(`Failed to update status: ${error.message}`);
+            throw new common_1.InternalServerErrorException('An error occurred while updating the order status.');
+        }
+    }
 };
 exports.PrintJobsService = PrintJobsService;
 exports.PrintJobsService = PrintJobsService = PrintJobsService_1 = __decorate([

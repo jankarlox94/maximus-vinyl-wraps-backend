@@ -67,6 +67,19 @@ let SupabaseService = SupabaseService_1 = class SupabaseService {
         }
         return data;
     }
+    async updateOrderStatus(orderId, status) {
+        const { data, error } = await this.supabase
+            .from('orders')
+            .update({ status: status })
+            .eq('id', orderId)
+            .select()
+            .single();
+        if (error) {
+            this.logger.error(`Supabase updateOrderStatus Error: ${error.message}`);
+            throw new Error('Failed to update order status in the database.');
+        }
+        return data;
+    }
 };
 exports.SupabaseService = SupabaseService;
 exports.SupabaseService = SupabaseService = SupabaseService_1 = __decorate([

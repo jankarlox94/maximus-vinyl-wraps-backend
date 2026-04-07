@@ -14,4 +14,8 @@ export declare class PrintJobsService {
         };
     }>;
     findAllOrders(): Promise<any[]>;
+    updateStatus(orderId: string, status: string): Promise<{
+        message: string;
+        data: any;
+    }>;
 }
