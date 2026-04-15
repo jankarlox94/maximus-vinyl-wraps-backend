@@ -111,76 +111,13 @@ export class PrintJobsController {
     return await this.printJobsService.updateStatus(orderId, status);
   }
 
-  // @Patch(':id/status')
-  // async updateStatus(@Param('id') id: string, @Body('status') status: string) {
-  //   // Validate that the status is one of your allowed flags
-  //   const validStatuses = [
-  //     'pending',
-  //     'on progress',
-  //     'ready for pickup',
-  //     'complete',
-  //   ];
-  //   if (!validStatuses.includes(status)) {
-  //     throw new BadRequestException('Invalid status flag provided.');
-  //   }
-
-  //   return await this.printJobsService.updateOrderStatus(id, status);
-  // }
+  // orders.controller.ts
+  @Patch(':id/payment')
+  async updatePayment(
+    @Param('id') id: string,
+    @Body('is_paid') is_paid: boolean,
+    @Body('pay_comments') pay_comments: string,
+  ) {
+    return this.printJobsService.updatePaymentStatus(id, is_paid, pay_comments);
+  }
 }
-
-// import {
-//   Controller,
-//   Post,
-//   Body,
-//   UseInterceptors,
-//   UploadedFile,
-//   ParseFilePipe,
-//   MaxFileSizeValidator,
-//   FileTypeValidator,
-//   Logger,
-// } from '@nestjs/common';
-// import { FileInterceptor } from '@nestjs/platform-express';
-// import { PrintJobsService } from './print-jobs.service';
-// import { CreatePrintJobDto } from './dto/create-print-jobs.dto';
-
-// @Controller('print-jobs')
-// export class PrintJobsController {
-//   // logger: Logger;
-//   constructor(private readonly printJobsService: PrintJobsService) {}
-
-//   @Post()
-//   @UseInterceptors(FileInterceptor('image')) // 'image' must match the key in your React FormData
-//   async create(
-//     @Body() createPrintJobDto: CreatePrintJobDto,
-
-//     @UploadedFile(
-//       new ParseFilePipe({
-//         validators: [
-//           new MaxFileSizeValidator({ maxSize: 8 * 1024 * 1024 }), // 8MB limit
-//           new FileTypeValidator({ fileType: '.(png|jpeg|jpg|pdf)' }), // File types
-//         ],
-//       }),
-//     )
-//     file: Express.Multer.File,
-//   ) {
-//     const logger = new Logger();
-//     logger.debug(`This application is on controller`);
-//     // logger.log(port);
-//     // this.logger.log('this log');
-//     try {
-//       //return this.mailSer
-//       return this.printJobsService.create(createPrintJobDto, file);
-//     } catch (e) {
-//       logger.debug(`This application failed:${e}`);
-//     }
-//   }
-
-//   // 1. 'createPrintJobDto' is changed to 'body: any' to handle the raw FormData
-//     // 2. 'file' is changed to 'files: Array<Express.Multer.File>' to handle multiple uploads
-//     create2(body: any, files: Array<Express.Multer.File>): Promise<{
-//         message: string;
-//         data: {
-//             orderId: any;
-//         };
-//     }>;
-// }

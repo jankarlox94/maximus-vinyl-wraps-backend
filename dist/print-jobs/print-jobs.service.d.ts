@@ -18,4 +18,8 @@ export declare class PrintJobsService {
         message: string;
         data: any;
     }>;
+    updatePaymentStatus(orderId: string, isPaid: boolean, payComments: string): Promise<{
+        message: string;
+        data: any;
+    }>;
 }

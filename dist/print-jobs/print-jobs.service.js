@@ -102,6 +102,19 @@ let PrintJobsService = PrintJobsService_1 = class PrintJobsService {
             throw new common_1.InternalServerErrorException('An error occurred while updating the order status.');
         }
     }
+    async updatePaymentStatus(orderId, isPaid, payComments) {
+        try {
+            const updatedOrder = await this.supabaseService.updatePaymentStatus(orderId, isPaid, payComments);
+            return {
+                message: 'Order pay status updated successfully',
+                data: updatedOrder,
+            };
+        }
+        catch (error) {
+            this.logger.error(`Failed to update payment status: ${error.message}`);
+            throw new common_1.InternalServerErrorException('An error occurred while updating the order payment status.');
+        }
+    }
 };
 exports.PrintJobsService = PrintJobsService;
 exports.PrintJobsService = PrintJobsService = PrintJobsService_1 = __decorate([

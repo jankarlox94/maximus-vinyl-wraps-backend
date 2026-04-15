@@ -15,4 +15,5 @@ export declare class SupabaseService {
     uploadStorageFile(bucket: string, path: string, fileBuffer: Buffer, mimetype: string): Promise<string>;
     insertOrderItems(items: any[]): Promise<any[]>;
     updateOrderStatus(orderId: string, status: string): Promise<any>;
+    updatePaymentStatus(id: string, is_paid: boolean, pay_comments: string): Promise<any>;
 }

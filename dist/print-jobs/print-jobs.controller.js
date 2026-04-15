@@ -76,6 +76,9 @@ let PrintJobsController = PrintJobsController_1 = class PrintJobsController {
         }
         return await this.printJobsService.updateStatus(orderId, status);
     }
+    async updatePayment(id, is_paid, pay_comments) {
+        return this.printJobsService.updatePaymentStatus(id, is_paid, pay_comments);
+    }
 };
 exports.PrintJobsController = PrintJobsController;
 __decorate([
@@ -101,6 +104,15 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], PrintJobsController.prototype, "updateStatus", null);
+__decorate([
+    (0, common_1.Patch)(':id/payment'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)('is_paid')),
+    __param(2, (0, common_1.Body)('pay_comments')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Boolean, String]),
+    __metadata("design:returntype", Promise)
+], PrintJobsController.prototype, "updatePayment", null);
 exports.PrintJobsController = PrintJobsController = PrintJobsController_1 = __decorate([
     (0, common_1.Controller)('print-jobs'),
     __metadata("design:paramtypes", [print_jobs_service_1.PrintJobsService])

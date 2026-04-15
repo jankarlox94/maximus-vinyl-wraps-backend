@@ -14,4 +14,8 @@ export declare class PrintJobsController {
         message: string;
         data: any;
     }>;
+    updatePayment(id: string, is_paid: boolean, pay_comments: string): Promise<{
+        message: string;
+        data: any;
+    }>;
 }

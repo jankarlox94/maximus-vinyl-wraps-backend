@@ -80,6 +80,22 @@ let SupabaseService = SupabaseService_1 = class SupabaseService {
         }
         return data;
     }
+    async updatePaymentStatus(id, is_paid, pay_comments) {
+        const { data, error } = await this.supabase
+            .from('orders')
+            .update({
+            is_paid: is_paid,
+            pay_comments: pay_comments,
+        })
+            .eq('id', id)
+            .select()
+            .single();
+        if (error) {
+            this.logger.error(`Supabase is_paid update Error: ${error.message}`);
+            throw new Error('Failed to update order is_paid status in the database.');
+        }
+        return data;
+    }
 };
 exports.SupabaseService = SupabaseService;
 exports.SupabaseService = SupabaseService = SupabaseService_1 = __decorate([

@@ -113,4 +113,28 @@ export class SupabaseService {
 
     return data;
   }
+
+  // orders.service.ts
+  async updatePaymentStatus(
+    id: string,
+    is_paid: boolean,
+    pay_comments: string,
+  ) {
+    const { data, error } = await this.supabase
+      .from('orders')
+      .update({
+        is_paid: is_paid,
+        pay_comments: pay_comments,
+      })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      this.logger.error(`Supabase is_paid update Error: ${error.message}`);
+      // Throw a standard NestJS error so the controller can catch it
+      throw new Error('Failed to update order is_paid status in the database.');
+    }
+    return data;
+  }
 }
