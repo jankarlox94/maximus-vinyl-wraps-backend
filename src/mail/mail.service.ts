@@ -100,9 +100,9 @@ export class MailService {
         subject: `🚨 New Quote Request from ${payload.customerName}, Customer Email: ${payload.customerEmail}`,
         sender: {
           name: 'Maximus System',
-          email: 'joflorez@utp.edu.co',
+          email: 'giancarlosanchez.dev@icloud.com',
         },
-        to: [{ email: `joflorez@utp.edu.co`, name: 'Admin' }],
+        to: [{ email: `giancarlosanchez.dev@icloud.com`, name: 'Admin' }],
         htmlContent: emailHtml,
       });
 
