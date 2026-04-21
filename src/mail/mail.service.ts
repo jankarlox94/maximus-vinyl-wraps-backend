@@ -8,6 +8,8 @@ import { BrevoClient } from '@getbrevo/brevo';
 export class MailService {
   private readonly logger = new Logger(MailService.name);
   private client: BrevoClient;
+  private mailFrom = this.config.get<string>('MAIL_FROM');
+  private manageEmail = this.config.get<string>('MANAGER_EMAIL');
 
   constructor(
     private readonly mailerService: MailerService,
@@ -96,13 +98,16 @@ export class MailService {
       //   subject: `🚨 New Quote Request from ${payload.customerName}`,
       //   html: emailHtml,
       // });
+
+      // Fetch the admin's phone number from your .env file
+
       await this.client.transactionalEmails.sendTransacEmail({
         subject: `🚨 New Quote Request from ${payload.customerName}, Customer Email: ${payload.customerEmail}`,
         sender: {
           name: 'Maximus System',
-          email: 'giancarlosanchez.dev@icloud.com',
+          email: this.manageEmail,
         },
-        to: [{ email: `giancarlosanchez.dev@icloud.com`, name: 'Admin' }],
+        to: [{ email: this.manageEmail, name: 'Admin' }],
         htmlContent: emailHtml,
       });
 
@@ -180,7 +185,7 @@ export class MailService {
         subject: `Your Print Quote Request is Under Review - Maximus Vinyl`,
         sender: {
           name: 'Maximus System',
-          email: 'joflorez@utp.edu.co',
+          email: this.manageEmail,
         },
         to: [{ email: payload.customerEmail, name: 'Admin' }],
         htmlContent: emailHtml,

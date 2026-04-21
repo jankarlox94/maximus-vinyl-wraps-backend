@@ -5,6 +5,8 @@ export declare class MailService {
     config: ConfigService;
     private readonly logger;
     private client;
+    private mailFrom;
+    private manageEmail;
     constructor(mailerService: MailerService, config: ConfigService);
     sendEstimateEmail(to: string, customer_email: string, imageUrl: string): Promise<void>;
     sendQuoteRequestInternal(payload: any, processedItems: any[]): Promise<void>;

@@ -20,6 +20,8 @@ let MailService = MailService_1 = class MailService {
         this.mailerService = mailerService;
         this.config = config;
         this.logger = new common_1.Logger(MailService_1.name);
+        this.mailFrom = this.config.get('MAIL_FROM');
+        this.manageEmail = this.config.get('MANAGER_EMAIL');
         this.client = new brevo_1.BrevoClient({
             apiKey: process.env.BREVO_API_KEY || '',
         });
@@ -82,9 +84,9 @@ let MailService = MailService_1 = class MailService {
                 subject: `🚨 New Quote Request from ${payload.customerName}, Customer Email: ${payload.customerEmail}`,
                 sender: {
                     name: 'Maximus System',
-                    email: 'giancarlosanchez.dev@icloud.com',
+                    email: this.manageEmail,
                 },
-                to: [{ email: `giancarlosanchez.dev@icloud.com`, name: 'Admin' }],
+                to: [{ email: this.manageEmail, name: 'Admin' }],
                 htmlContent: emailHtml,
             });
             this.logger.debug(`Internal quote email successfully sent.`);
@@ -146,7 +148,7 @@ let MailService = MailService_1 = class MailService {
                 subject: `Your Print Quote Request is Under Review - Maximus Vinyl`,
                 sender: {
                     name: 'Maximus System',
-                    email: 'joflorez@utp.edu.co',
+                    email: this.manageEmail,
                 },
                 to: [{ email: payload.customerEmail, name: 'Admin' }],
                 htmlContent: emailHtml,
