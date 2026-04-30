@@ -9,6 +9,6 @@ export declare class MailService {
     private manageEmail;
     constructor(mailerService: MailerService, config: ConfigService);
     sendEstimateEmail(to: string, customer_email: string, imageUrl: string): Promise<void>;
-    sendQuoteRequestInternal(payload: any, processedItems: any[]): Promise<void>;
-    sendQuoteConfirmationToCustomer(payload: any, processedItems: any[]): Promise<void>;
+    sendQuoteRequestInternal(payload: any, recordId: any, processedItems: any[]): Promise<void>;
+    sendQuoteConfirmationToCustomer(payload: any, orderRecordId: any, processedItems: any[]): Promise<void>;
 }

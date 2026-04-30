@@ -88,10 +88,14 @@ export class PrintJobsService {
 
       // Fire these off asynchronously so the user doesn't have to wait for the emails to finish sending
       this.mailService
-        .sendQuoteRequestInternal(payload, processedItems)
+        .sendQuoteRequestInternal(payload, orderRecord.id, processedItems)
         .catch((e) => this.logger.error(e));
       this.mailService
-        .sendQuoteConfirmationToCustomer(payload, processedItems)
+        .sendQuoteConfirmationToCustomer(
+          payload,
+          orderRecord.id,
+          processedItems,
+        )
         .catch((e) => this.logger.error(e));
       this.whatsappService
         .notifyAdminNewQuote(

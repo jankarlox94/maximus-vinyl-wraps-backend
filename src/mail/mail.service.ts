@@ -47,7 +47,11 @@ export class MailService {
   }
 
   // --- 2. Internal Notification (For Your Team) ---
-  async sendQuoteRequestInternal(payload: any, processedItems: any[]) {
+  async sendQuoteRequestInternal(
+    payload: any,
+    recordId: any,
+    processedItems: any[],
+  ) {
     this.logger.debug(
       `Sending internal quote request email for: ${payload.customerName}, Brevo SMTP Host: ${this.config.get('SMTP_HOST')}`,
     );
@@ -81,7 +85,7 @@ export class MailService {
         
         <div style="margin-top: 20px; margin-bottom: 30px;">
           <h3 style="margin-bottom: 10px; color: #0f172a;">Customer Details</h3>
-          <p style="margin: 5px 0;"><strong>Name:</strong> ${payload.customerName}</p>
+          <p style="margin: 5px 0;"><strong>Name:</strong> ${payload.customerName}, Order # ${recordId}</p>
           <p style="margin: 5px 0;"><strong>Email:</strong> <a href="mailto:${payload.customerEmail}">${payload.customerEmail}</a></p>
           <p style="margin: 5px 0;"><strong>Phone:</strong> ${payload.customerPhone || '<em>Not provided</em>'}</p>
         </div>
@@ -92,15 +96,6 @@ export class MailService {
     `;
 
     try {
-      // await this.mailerService.sendMail({
-      //   to: 'giancarlosanchez.dev@icloud.com', // <-- UPDATE to shop email
-      //   replyTo: payload.customerEmail,
-      //   subject: `🚨 New Quote Request from ${payload.customerName}`,
-      //   html: emailHtml,
-      // });
-
-      // Fetch the admin's phone number from your .env file
-
       await this.client.transactionalEmails.sendTransacEmail({
         subject: `🚨 New Quote Request from ${payload.customerName}, Customer Email: ${payload.customerEmail}`,
         sender: {
@@ -118,7 +113,11 @@ export class MailService {
   }
 
   // --- 3. NEW: Customer Confirmation Email ---
-  async sendQuoteConfirmationToCustomer(payload: any, processedItems: any[]) {
+  async sendQuoteConfirmationToCustomer(
+    payload: any,
+    orderRecordId: any,
+    processedItems: any[],
+  ) {
     this.logger.debug(
       `Sending customer confirmation email to: ${payload.customerEmail}`,
     );
@@ -144,7 +143,7 @@ export class MailService {
         </div>
 
         <div style="padding: 32px 24px;">
-          <h2 style="margin-top: 0; color: #0f172a; font-size: 20px;">We got your request, ${payload.customerName}!</h2>
+          <h2 style="margin-top: 0; color: #0f172a; font-size: 20px;">We got your request, ${payload.customerName}! Order #:${orderRecordId}</h2>
           <p style="line-height: 1.6; color: #334155;">
             Thank you for reaching out to us. Our print specialists have received your project details and any artwork you attached. 
           </p>

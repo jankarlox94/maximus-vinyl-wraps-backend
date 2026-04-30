@@ -55,10 +55,10 @@ let PrintJobsService = PrintJobsService_1 = class PrintJobsService {
             await this.supabaseService.insertOrderItems(processedItems);
             this.logger.debug('Order saved. Triggering Mail and WhatsApp notifications...');
             this.mailService
-                .sendQuoteRequestInternal(payload, processedItems)
+                .sendQuoteRequestInternal(payload, orderRecord.id, processedItems)
                 .catch((e) => this.logger.error(e));
             this.mailService
-                .sendQuoteConfirmationToCustomer(payload, processedItems)
+                .sendQuoteConfirmationToCustomer(payload, orderRecord.id, processedItems)
                 .catch((e) => this.logger.error(e));
             this.whatsappService
                 .notifyAdminNewQuote(orderRecord.id, payload.customerName, processedItems)

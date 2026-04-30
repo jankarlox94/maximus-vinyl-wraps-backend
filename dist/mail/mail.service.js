@@ -44,7 +44,7 @@ let MailService = MailService_1 = class MailService {
             this.logger.error(`This application is on mail service error, ${e}`);
         }
     }
-    async sendQuoteRequestInternal(payload, processedItems) {
+    async sendQuoteRequestInternal(payload, recordId, processedItems) {
         this.logger.debug(`Sending internal quote request email for: ${payload.customerName}, Brevo SMTP Host: ${this.config.get('SMTP_HOST')}`);
         this.logger.debug(`Brevo SMTP Host: ${this.config.get('SMTP_HOST')}`);
         const itemsHtml = processedItems
@@ -70,7 +70,7 @@ let MailService = MailService_1 = class MailService {
         
         <div style="margin-top: 20px; margin-bottom: 30px;">
           <h3 style="margin-bottom: 10px; color: #0f172a;">Customer Details</h3>
-          <p style="margin: 5px 0;"><strong>Name:</strong> ${payload.customerName}</p>
+          <p style="margin: 5px 0;"><strong>Name:</strong> ${payload.customerName}, Order # ${recordId}</p>
           <p style="margin: 5px 0;"><strong>Email:</strong> <a href="mailto:${payload.customerEmail}">${payload.customerEmail}</a></p>
           <p style="margin: 5px 0;"><strong>Phone:</strong> ${payload.customerPhone || '<em>Not provided</em>'}</p>
         </div>
@@ -95,7 +95,7 @@ let MailService = MailService_1 = class MailService {
             this.logger.error(`Failed to send internal quote email: ${e.message}`);
         }
     }
-    async sendQuoteConfirmationToCustomer(payload, processedItems) {
+    async sendQuoteConfirmationToCustomer(payload, orderRecordId, processedItems) {
         this.logger.debug(`Sending customer confirmation email to: ${payload.customerEmail}`);
         const itemsHtml = processedItems
             .map((item) => `
@@ -114,7 +114,7 @@ let MailService = MailService_1 = class MailService {
         </div>
 
         <div style="padding: 32px 24px;">
-          <h2 style="margin-top: 0; color: #0f172a; font-size: 20px;">We got your request, ${payload.customerName}!</h2>
+          <h2 style="margin-top: 0; color: #0f172a; font-size: 20px;">We got your request, ${payload.customerName}! Order #:${orderRecordId}</h2>
           <p style="line-height: 1.6; color: #334155;">
             Thank you for reaching out to us. Our print specialists have received your project details and any artwork you attached. 
           </p>
