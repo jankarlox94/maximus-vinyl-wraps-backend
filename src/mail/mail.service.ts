@@ -174,12 +174,6 @@ export class MailService {
     `;
 
     try {
-      // await this.mailerService.sendMail({
-      //   to: payload.customerEmail,
-      //   subject: `Your Print Quote Request is Under Review - Maximus Vinyl`,
-      //   html: emailHtml,
-      // });
-
       await this.client.transactionalEmails.sendTransacEmail({
         subject: `Your Print Quote Request is Under Review - Maximus Vinyl`,
         sender: {
