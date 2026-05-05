@@ -67,6 +67,7 @@ export class PrintJobsController {
         customerName: body.customerName,
         customerEmail: body.customerEmail,
         customerPhone: body.customerPhone,
+        isCustomDesign: body.isCustomDesign,
         items: cartItems,
       };
 

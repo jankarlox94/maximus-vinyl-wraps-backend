@@ -27,6 +27,7 @@ export class SupabaseService {
     customerName: string;
     customerEmail: string;
     customerPhone?: string;
+    isCustomDesign: boolean;
     status: string;
   }) {
     const { data: order, error } = await this.supabase
@@ -35,6 +36,7 @@ export class SupabaseService {
         customer_name: data.customerName,
         customer_email: data.customerEmail,
         customer_phone: data.customerPhone,
+        is_custom_design: data.isCustomDesign,
         status: data.status,
       })
       .select()

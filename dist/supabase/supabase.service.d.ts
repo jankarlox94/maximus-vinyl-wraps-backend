@@ -10,6 +10,7 @@ export declare class SupabaseService {
         customerName: string;
         customerEmail: string;
         customerPhone?: string;
+        isCustomDesign: boolean;
         status: string;
     }): Promise<any>;
     uploadStorageFile(bucket: string, path: string, fileBuffer: Buffer, mimetype: string): Promise<string>;

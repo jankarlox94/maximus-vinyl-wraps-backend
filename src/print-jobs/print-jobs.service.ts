@@ -30,6 +30,7 @@ export class PrintJobsService {
         customerName: payload.customerName,
         customerEmail: payload.customerEmail,
         customerPhone: payload.customerPhone,
+        isCustomDesign: payload.isCustomDesign,
         status: 'pending_quote',
       });
 
@@ -74,6 +75,7 @@ export class PrintJobsService {
             customer_notes: item.notes,
             artwork_url: uploadedFileUrl, // Now securely linked!
             estimated_price: item.price,
+            is_custom_design: item.isCustomDesign,
           };
         }),
       );

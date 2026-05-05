@@ -29,6 +29,7 @@ let PrintJobsService = PrintJobsService_1 = class PrintJobsService {
                 customerName: payload.customerName,
                 customerEmail: payload.customerEmail,
                 customerPhone: payload.customerPhone,
+                isCustomDesign: payload.isCustomDesign,
                 status: 'pending_quote',
             });
             const processedItems = await Promise.all(payload.items.map(async (item) => {
@@ -50,6 +51,7 @@ let PrintJobsService = PrintJobsService_1 = class PrintJobsService {
                     customer_notes: item.notes,
                     artwork_url: uploadedFileUrl,
                     estimated_price: item.price,
+                    is_custom_design: item.isCustomDesign,
                 };
             }));
             await this.supabaseService.insertOrderItems(processedItems);

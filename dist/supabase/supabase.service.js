@@ -30,6 +30,7 @@ let SupabaseService = SupabaseService_1 = class SupabaseService {
             customer_name: data.customerName,
             customer_email: data.customerEmail,
             customer_phone: data.customerPhone,
+            is_custom_design: data.isCustomDesign,
             status: data.status,
         })
             .select()
