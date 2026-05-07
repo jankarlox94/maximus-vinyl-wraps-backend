@@ -70,6 +70,13 @@ let PrintJobsController = PrintJobsController_1 = class PrintJobsController {
             throw new common_1.InternalServerErrorException('Could not retrieve orders.');
         }
     }
+    async getOrders(orderNumberQuery) {
+        if (orderNumberQuery && orderNumberQuery.startsWith('eq.')) {
+            const orderNumber = orderNumberQuery.split('.')[1];
+            return this.printJobsService.findByOrderNumber(orderNumber);
+        }
+        return this.printJobsService.findAll();
+    }
     async updateStatus(orderId, status) {
         this.logger.debug(`Received request to update order ${orderId} to status: ${status}`);
         if (!status) {
@@ -97,6 +104,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PrintJobsController.prototype, "getAdminDashboard", null);
+__decorate([
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)('order_number')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], PrintJobsController.prototype, "getOrders", null);
 __decorate([
     (0, common_1.Patch)(':id/status'),
     __param(0, (0, common_1.Param)('id')),

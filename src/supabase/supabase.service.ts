@@ -139,4 +139,33 @@ export class SupabaseService {
     }
     return data;
   }
+
+  async getOrderByNumber(orderNumber: string) {
+    const { data, error } = await this.supabase
+      .from('orders')
+      .select(
+        `
+      *,
+      order_items (
+        *
+      )
+    `,
+      )
+      .eq('id', orderNumber); // Matching orders.id column as requested
+
+    if (error) {
+      console.error('Supabase Error:', error.message);
+      throw error;
+    }
+
+    // data will be an array; our controller/frontend expects data[0]
+    return data;
+  }
+
+  async getAllOrders() {
+    const { data, error } = await this.supabase.from('orders').select('*');
+
+    if (error) throw error;
+    return data;
+  }
 }

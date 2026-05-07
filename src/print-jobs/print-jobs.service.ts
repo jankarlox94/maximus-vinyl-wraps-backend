@@ -2,6 +2,7 @@ import {
   Injectable,
   Logger,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { SupabaseService } from '../supabase/supabase.service';
 import { MailService } from 'src/mail/mail.service';
@@ -120,6 +121,20 @@ export class PrintJobsService {
         'An error occurred while saving the project details.',
       );
     }
+  }
+
+  async findByOrderNumber(orderNumber: string) {
+    const data = await this.supabaseService.getOrderByNumber(orderNumber);
+
+    if (!data || data.length === 0) {
+      throw new NotFoundException(`Order #${orderNumber} not found`);
+    }
+
+    return data;
+  }
+
+  async findAll() {
+    return this.supabaseService.getAllOrders();
   }
 
   async findAllOrders() {

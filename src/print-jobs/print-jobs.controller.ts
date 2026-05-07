@@ -10,6 +10,7 @@ import {
   InternalServerErrorException,
   Patch,
   Param,
+  Query,
 } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { PrintJobsService } from './print-jobs.service';
@@ -92,6 +93,18 @@ export class PrintJobsController {
       this.logger.error(`Failed to fetch dashboard data: ${e.message}`);
       throw new InternalServerErrorException('Could not retrieve orders.');
     }
+  }
+
+  @Get()
+  async getOrders(@Query('order_number') orderNumberQuery?: string) {
+    // Handling the "eq.VALUE" format from your frontend fetch
+    if (orderNumberQuery && orderNumberQuery.startsWith('eq.')) {
+      const orderNumber = orderNumberQuery.split('.')[1];
+      return this.printJobsService.findByOrderNumber(orderNumber);
+    }
+
+    // Fallback to get all or handle other queries
+    return this.printJobsService.findAll();
   }
 
   @Patch(':id/status')

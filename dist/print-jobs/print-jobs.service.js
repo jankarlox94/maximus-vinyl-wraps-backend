@@ -75,6 +75,16 @@ let PrintJobsService = PrintJobsService_1 = class PrintJobsService {
             throw new common_1.InternalServerErrorException('An error occurred while saving the project details.');
         }
     }
+    async findByOrderNumber(orderNumber) {
+        const data = await this.supabaseService.getOrderByNumber(orderNumber);
+        if (!data || data.length === 0) {
+            throw new common_1.NotFoundException(`Order #${orderNumber} not found`);
+        }
+        return data;
+    }
+    async findAll() {
+        return this.supabaseService.getAllOrders();
+    }
     async findAllOrders() {
         const { data, error } = await this.supabaseService
             .getClient()

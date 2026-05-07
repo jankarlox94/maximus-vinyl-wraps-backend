@@ -97,6 +97,28 @@ let SupabaseService = SupabaseService_1 = class SupabaseService {
         }
         return data;
     }
+    async getOrderByNumber(orderNumber) {
+        const { data, error } = await this.supabase
+            .from('orders')
+            .select(`
+      *,
+      order_items (
+        *
+      )
+    `)
+            .eq('id', orderNumber);
+        if (error) {
+            console.error('Supabase Error:', error.message);
+            throw error;
+        }
+        return data;
+    }
+    async getAllOrders() {
+        const { data, error } = await this.supabase.from('orders').select('*');
+        if (error)
+            throw error;
+        return data;
+    }
 };
 exports.SupabaseService = SupabaseService;
 exports.SupabaseService = SupabaseService = SupabaseService_1 = __decorate([

@@ -17,4 +17,6 @@ export declare class SupabaseService {
     insertOrderItems(items: any[]): Promise<any[]>;
     updateOrderStatus(orderId: string, status: string): Promise<any>;
     updatePaymentStatus(id: string, is_paid: boolean, pay_comments: string): Promise<any>;
+    getOrderByNumber(orderNumber: string): Promise<any[]>;
+    getAllOrders(): Promise<any[]>;
 }

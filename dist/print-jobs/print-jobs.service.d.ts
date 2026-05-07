@@ -13,6 +13,8 @@ export declare class PrintJobsService {
             orderId: any;
         };
     }>;
+    findByOrderNumber(orderNumber: string): Promise<any[]>;
+    findAll(): Promise<any[]>;
     findAllOrders(): Promise<any[]>;
     updateStatus(orderId: string, status: string): Promise<{
         message: string;
