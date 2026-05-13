@@ -80,18 +80,33 @@ export class MailService {
       .join('');
 
     const emailHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b;">
-        <h2 style="color: #f97316; border-bottom: 2px solid #f97316; padding-bottom: 10px;">New Quote Request - Maximus Vinyl Wrap</h2>
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px;">
+        <h2 style="color: #f97316; border-bottom: 2px solid #f97316; padding-bottom: 10px; margin-top: 0;">New Quote Request - Maximus Vinyl Wrap</h2>
         
+        <div style="background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 15px; margin-bottom: 25px; text-align: center;">
+          <p style="margin: 0 0 10px 0; font-size: 13px; font-weight: bold; color: #475569;">Internal Order Management:</p>
+          <a href="${process.env.FRONTEND_URL}/track-order?ordernumber=${recordId}" 
+             style="background-color: #0f172a; color: #38bdf8; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 13px; display: inline-block;">
+             Open Order #${recordId} in Dashboard
+          </a>
+        </div>
+
         <div style="margin-top: 20px; margin-bottom: 30px;">
           <h3 style="margin-bottom: 10px; color: #0f172a;">Customer Details</h3>
-          <p style="margin: 5px 0;"><strong>Name:</strong> ${payload.customerName}, Order # ${recordId}</p>
-          <p style="margin: 5px 0;"><strong>Email:</strong> <a href="mailto:${payload.customerEmail}">${payload.customerEmail}</a></p>
+          <p style="margin: 5px 0;"><strong>Name:</strong> ${payload.customerName}</p>
+          <p style="margin: 5px 0;"><strong>Order Reference:</strong> ${recordId}</p>
+          <p style="margin: 5px 0;"><strong>Email:</strong> <a href="mailto:${payload.customerEmail}" style="color: #0284c7;">${payload.customerEmail}</a></p>
           <p style="margin: 5px 0;"><strong>Phone:</strong> ${payload.customerPhone || '<em>Not provided</em>'}</p>
         </div>
 
-        <h3 style="margin-bottom: 15px; color: #0f172a;">Requested Items</h3>
-        ${itemsHtml}
+        <h3 style="margin-bottom: 15px; color: #0f172a; border-left: 4px solid #f97316; padding-left: 10px;">Requested Items</h3>
+        <div style="background-color: #ffffff;">
+          ${itemsHtml}
+        </div>
+
+        <div style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #e2e8f0; font-size: 11px; color: #94a3b8; text-align: center;">
+          Sent via MaximusVINYL Automated Order System
+        </div>
       </div>
     `;
 
@@ -143,10 +158,22 @@ export class MailService {
         </div>
 
         <div style="padding: 32px 24px;">
-          <h2 style="margin-top: 0; color: #0f172a; font-size: 20px;">We got your request, ${payload.customerName}! Order #:${orderRecordId}</h2>
+          <h2 style="margin-top: 0; color: #0f172a; font-size: 20px;">We got your request, ${payload.customerName}!</h2>
           <p style="line-height: 1.6; color: #334155;">
             Thank you for reaching out to us. Our print specialists have received your project details and any artwork you attached. 
           </p>
+          
+          <div style="margin: 24px 0; text-align: center; padding: 20px; border: 1px dashed #cbd5e1; border-radius: 8px;">
+            <p style="margin: 0 0 12px 0; font-size: 14px; color: #64748b; font-weight: bold; uppercase tracking-wide;">Track Your Project Status</p>
+            <a href="${process.env.FRONTEND_URL}/track-order?ordernumber=${orderRecordId}" 
+               style="background-color: #0f172a; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 14px; display: inline-block; border: 1px solid #334155;">
+               View Order #${orderRecordId}
+            </a>
+            <p style="margin: 12px 0 0 0; font-size: 11px; color: #94a3b8;">
+              You can check real-time updates and view your digital proofs here.
+            </p>
+          </div>
+
           <p style="line-height: 1.6; color: #334155; margin-bottom: 24px;">
             We are currently reviewing your files to ensure the highest print quality. <strong>We will email you an official quote and digital proof shortly.</strong>
           </p>
@@ -172,6 +199,44 @@ export class MailService {
 
       </div>
     `;
+
+    // const emailHtml = `
+    //   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+
+    //     <div style="background-color: #0f172a; padding: 24px; text-align: center;">
+    //       <h1 style="color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 1px;">Maximus<span style="color: #f97316;">VINYL</span></h1>
+    //     </div>
+
+    //     <div style="padding: 32px 24px;">
+    //       <h2 style="margin-top: 0; color: #0f172a; font-size: 20px;">We got your request, ${payload.customerName}! Order #:${orderRecordId}</h2>
+    //       <p style="line-height: 1.6; color: #334155;">
+    //         Thank you for reaching out to us. Our print specialists have received your project details and any artwork you attached.
+    //       </p>
+    //       <p style="line-height: 1.6; color: #334155; margin-bottom: 24px;">
+    //         We are currently reviewing your files to ensure the highest print quality. <strong>We will email you an official quote and digital proof shortly.</strong>
+    //       </p>
+
+    //       <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 24px;">
+    //         <h3 style="margin-top: 0; color: #0f172a; font-size: 16px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">Project Summary</h3>
+    //         <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+    //           <tbody>
+    //             ${itemsHtml}
+    //           </tbody>
+    //         </table>
+    //       </div>
+
+    //       <p style="line-height: 1.6; color: #334155;">
+    //         If you have any immediate questions or need to make a change, simply reply to this email!
+    //       </p>
+    //     </div>
+
+    //     <div style="background-color: #f1f5f9; padding: 20px; text-align: center; color: #64748b; font-size: 12px;">
+    //       <p style="margin: 0;">Maximus Vinyl Wrap & Print</p>
+    //       <p style="margin: 4px 0 0 0;">Oklahoma City, OK</p>
+    //     </div>
+
+    //   </div>
+    // `;
 
     try {
       await this.client.transactionalEmails.sendTransacEmail({
