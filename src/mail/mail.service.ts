@@ -87,8 +87,12 @@ export class MailService {
           <p style="margin: 0 0 10px 0; font-size: 13px; font-weight: bold; color: #475569;">Internal Order Management:</p>
           <a href="${process.env.FRONTEND_URL}/track-order?ordernumber=${recordId}" 
              style="background-color: #0f172a; color: #38bdf8; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 13px; display: inline-block;">
-             Open Order #${recordId} in Dashboard
+             Open Order(Public Tracker) #${recordId} in Order Tracker
           </a>
+            <a href="${process.env.FRONTEND_URL}/dashboard?order_number=${recordId}" 
+             style="background-color: #0f172a; color: #38bdf8; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 13px; display: inline-block;">
+             Dashboard Open Order #${recordId} Admin Dashboard
+          </a> 
         </div>
 
         <div style="margin-top: 20px; margin-bottom: 30px;">

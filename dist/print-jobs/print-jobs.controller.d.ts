@@ -9,7 +9,7 @@ export declare class PrintJobsController {
             orderId: any;
         };
     }>;
-    getAdminDashboard(): Promise<any[]>;
+    getDashboardOrders(orderNumberQuery?: string): Promise<any[]>;
     getOrders(orderNumberQuery?: string): Promise<any[]>;
     updateStatus(orderId: string, status: string): Promise<{
         message: string;

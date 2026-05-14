@@ -83,15 +83,37 @@ export class PrintJobsController {
     }
   }
 
+  // @Get('admin/dashboard')
+  // // In a real production app, you would add a @UseGuards(AuthGuard, RolesGuard) here
+  // async getAdminDashboard() {
+  //   this.logger.debug('Admin dashboard data requested.');
+  //   try {
+  //     return await this.printJobsService.findAllOrders();
+  //   } catch (e) {
+  //     this.logger.error(`Failed to fetch dashboard data: ${e.message}`);
+  //     throw new InternalServerErrorException('Could not retrieve orders.');
+  //   }
+  // }
+
   @Get('admin/dashboard')
-  // In a real production app, you would add a @UseGuards(AuthGuard, RolesGuard) here
-  async getAdminDashboard() {
-    this.logger.debug('Admin dashboard data requested.');
+  async getDashboardOrders(@Query('order_number') orderNumberQuery?: string) {
+    this.logger.debug(
+      `Dashboard data requested. Filter: ${orderNumberQuery || 'None'}`,
+    );
+
     try {
-      return await this.printJobsService.findAllOrders();
+      if (orderNumberQuery) {
+        // If a specific ID is passed, find that specific order
+        return await this.printJobsService.findByOrderNumber(orderNumberQuery);
+      }
+
+      // Default dashboard behavior: return all orders
+      return await this.printJobsService.findAll();
     } catch (e) {
-      this.logger.error(`Failed to fetch dashboard data: ${e.message}`);
-      throw new InternalServerErrorException('Could not retrieve orders.');
+      this.logger.error(`Dashboard fetch failed: ${e.message}`);
+      throw new InternalServerErrorException(
+        'Could not retrieve dashboard data.',
+      );
     }
   }
 
