@@ -100,6 +100,34 @@ let PrintJobsService = PrintJobsService_1 = class PrintJobsService {
         }
         return data;
     }
+    async trackNewVisit() {
+        this.logger.debug(`Updating visitor tracking stats`);
+        try {
+            await this.supabaseService.incrementVisitorCount('visitor_count');
+            return { success: true };
+        }
+        catch (e) {
+            this.logger.error(`Failed to increment database metrics: ${e.message}`);
+            return { success: false };
+        }
+    }
+    async getVisitorCount() {
+        try {
+            const { data, error } = await this.supabaseService
+                .getClient()
+                .from('site_metrics')
+                .select('value')
+                .eq('metric_name', 'visitor_count')
+                .single();
+            if (error)
+                throw error;
+            return data?.value || 0;
+        }
+        catch (e) {
+            this.logger.error(`Failed to fetch site visitor metrics: ${e.message}`);
+            return 0;
+        }
+    }
     async updateStatus(orderId, status) {
         this.logger.debug(`Updating status for order ${orderId} to: ${status}`);
         try {

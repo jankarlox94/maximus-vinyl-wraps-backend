@@ -168,4 +168,33 @@ export class SupabaseService {
     if (error) throw error;
     return data;
   }
+
+  // 1. Increment via raw RPC or standard upsert logic
+  async incrementVisitorCount(name: string): Promise<void> {
+    // We fetch the current value and increment it
+    const { data } = await this.supabase
+      .from('site_metrics')
+      .select('value')
+      .eq('metric_name', name)
+      .single();
+
+    const currentCount = data?.value || 0;
+
+    await this.supabase
+      .from('site_metrics')
+      .update({ value: currentCount + 1 })
+      .eq('metric_name', name);
+  }
+
+  // 2. Read the metric value
+  async getVisitorCountValue(name: string): Promise<number> {
+    const { data, error } = await this.supabase
+      .from('site_metrics')
+      .select('value')
+      .eq('metric_name', name)
+      .single();
+
+    if (error) return 0;
+    return data.value;
+  }
 }

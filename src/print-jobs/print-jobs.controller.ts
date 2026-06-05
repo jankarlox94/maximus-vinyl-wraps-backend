@@ -95,6 +95,19 @@ export class PrintJobsController {
   //   }
   // }
 
+  // =========================================================================
+  // NEW: Public tracking endpoint called by the public landing page
+  // =========================================================================
+  @Post('visitor-hit')
+  async recordHit() {
+    this.logger.debug('Public landing page traffic hit registered.');
+    return await this.printJobsService.trackNewVisit();
+  }
+
+  // =========================================================================
+  // UPDATED: Fetches dashboard metrics alongside standard order logs
+  // =
+
   @Get('admin/dashboard')
   async getDashboardOrders(@Query('order_number') orderNumberQuery?: string) {
     this.logger.debug(
@@ -108,7 +121,14 @@ export class PrintJobsController {
       }
 
       // Default dashboard behavior: return all orders
-      return await this.printJobsService.findAll();
+      const orders = await this.printJobsService.findAll();
+      const totalVisitors = await this.printJobsService.getVisitorCount();
+      return {
+        orders,
+        metrics: {
+          totalVisitors,
+        },
+      };
     } catch (e) {
       this.logger.error(`Dashboard fetch failed: ${e.message}`);
       throw new InternalServerErrorException(

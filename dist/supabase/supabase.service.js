@@ -119,6 +119,28 @@ let SupabaseService = SupabaseService_1 = class SupabaseService {
             throw error;
         return data;
     }
+    async incrementVisitorCount(name) {
+        const { data } = await this.supabase
+            .from('site_metrics')
+            .select('value')
+            .eq('metric_name', name)
+            .single();
+        const currentCount = data?.value || 0;
+        await this.supabase
+            .from('site_metrics')
+            .update({ value: currentCount + 1 })
+            .eq('metric_name', name);
+    }
+    async getVisitorCountValue(name) {
+        const { data, error } = await this.supabase
+            .from('site_metrics')
+            .select('value')
+            .eq('metric_name', name)
+            .single();
+        if (error)
+            return 0;
+        return data.value;
+    }
 };
 exports.SupabaseService = SupabaseService;
 exports.SupabaseService = SupabaseService = SupabaseService_1 = __decorate([

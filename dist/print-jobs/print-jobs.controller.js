@@ -60,13 +60,24 @@ let PrintJobsController = PrintJobsController_1 = class PrintJobsController {
             throw new common_1.BadRequestException('Invalid payload data or malformed JSON.');
         }
     }
+    async recordHit() {
+        this.logger.debug('Public landing page traffic hit registered.');
+        return await this.printJobsService.trackNewVisit();
+    }
     async getDashboardOrders(orderNumberQuery) {
         this.logger.debug(`Dashboard data requested. Filter: ${orderNumberQuery || 'None'}`);
         try {
             if (orderNumberQuery) {
                 return await this.printJobsService.findByOrderNumber(orderNumberQuery);
             }
-            return await this.printJobsService.findAll();
+            const orders = await this.printJobsService.findAll();
+            const totalVisitors = await this.printJobsService.getVisitorCount();
+            return {
+                orders,
+                metrics: {
+                    totalVisitors,
+                },
+            };
         }
         catch (e) {
             this.logger.error(`Dashboard fetch failed: ${e.message}`);
@@ -101,6 +112,12 @@ __decorate([
     __metadata("design:paramtypes", [Object, Array]),
     __metadata("design:returntype", Promise)
 ], PrintJobsController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)('visitor-hit'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], PrintJobsController.prototype, "recordHit", null);
 __decorate([
     (0, common_1.Get)('admin/dashboard'),
     __param(0, (0, common_1.Query)('order_number')),

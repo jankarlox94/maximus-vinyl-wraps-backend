@@ -160,6 +160,41 @@ export class PrintJobsService {
     return data;
   }
 
+  // =========================================================================
+  // ACTIVATED: Increments counter row in Supabase using your key identifier
+  // =========================================================================
+  async trackNewVisit() {
+    this.logger.debug(`Updating visitor tracking stats`);
+    try {
+      await this.supabaseService.incrementVisitorCount('visitor_count');
+      return { success: true };
+    } catch (e) {
+      this.logger.error(`Failed to increment database metrics: ${e.message}`);
+      // Fail silently to prevent telemetry problems from bringing down page responses
+      return { success: false };
+    }
+  }
+
+  // =========================================================================
+  // NEW: Pulls metrics value down for dashboard processing
+  // =========================================================================
+  async getVisitorCount(): Promise<number> {
+    try {
+      const { data, error } = await this.supabaseService
+        .getClient()
+        .from('site_metrics') // Or whatever your underlying key-value table name is
+        .select('value')
+        .eq('metric_name', 'visitor_count')
+        .single();
+
+      if (error) throw error;
+      return data?.value || 0;
+    } catch (e) {
+      this.logger.error(`Failed to fetch site visitor metrics: ${e.message}`);
+      return 0; // Fallback to 0 instead of crashing dashboard page render
+    }
+  }
+
   async updateStatus(orderId: string, status: string) {
     this.logger.debug(`Updating status for order ${orderId} to: ${status}`);
 

@@ -16,6 +16,10 @@ export declare class PrintJobsService {
     findByOrderNumber(orderNumber: string): Promise<any[]>;
     findAll(): Promise<any[]>;
     findAllOrders(): Promise<any[]>;
+    trackNewVisit(): Promise<{
+        success: boolean;
+    }>;
+    getVisitorCount(): Promise<number>;
     updateStatus(orderId: string, status: string): Promise<{
         message: string;
         data: any;

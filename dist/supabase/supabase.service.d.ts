@@ -19,4 +19,6 @@ export declare class SupabaseService {
     updatePaymentStatus(id: string, is_paid: boolean, pay_comments: string): Promise<any>;
     getOrderByNumber(orderNumber: string): Promise<any[]>;
     getAllOrders(): Promise<any[]>;
+    incrementVisitorCount(name: string): Promise<void>;
+    getVisitorCountValue(name: string): Promise<number>;
 }
