@@ -163,7 +163,10 @@ export class SupabaseService {
   }
 
   async getAllOrders() {
-    const { data, error } = await this.supabase.from('orders').select('*');
+    const { data, error } = await this.supabase
+      .from('orders')
+      .select('*')
+      .order('lastUpdatedDateTime', { ascending: false }); // Sorts by most recent first
 
     if (error) throw error;
     return data;

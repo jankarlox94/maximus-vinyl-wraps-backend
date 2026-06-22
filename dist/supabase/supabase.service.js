@@ -114,7 +114,10 @@ let SupabaseService = SupabaseService_1 = class SupabaseService {
         return data;
     }
     async getAllOrders() {
-        const { data, error } = await this.supabase.from('orders').select('*');
+        const { data, error } = await this.supabase
+            .from('orders')
+            .select('*')
+            .order('lastUpdatedDateTime', { ascending: false });
         if (error)
             throw error;
         return data;
