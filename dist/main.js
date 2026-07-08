@@ -15,6 +15,9 @@ async function bootstrap() {
         origin: [
             'https://maximus-web-client.netlify.app',
             'https://maximus-vinyl-wraps-backend.onrender.com',
+            'https://maximusvinylwraps.com',
+            'https://api.maximusvinylwraps.com',
+            'https://www.maximusvinylwraps.com',
             'http://localhost:5173',
             'http://localhost:3000',
             'http://[::1]:3000',
