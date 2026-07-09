@@ -203,45 +203,6 @@ export class MailService {
 
       </div>
     `;
-
-    // const emailHtml = `
-    //   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
-
-    //     <div style="background-color: #0f172a; padding: 24px; text-align: center;">
-    //       <h1 style="color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 1px;">Maximus<span style="color: #f97316;">VINYL</span></h1>
-    //     </div>
-
-    //     <div style="padding: 32px 24px;">
-    //       <h2 style="margin-top: 0; color: #0f172a; font-size: 20px;">We got your request, ${payload.customerName}! Order #:${orderRecordId}</h2>
-    //       <p style="line-height: 1.6; color: #334155;">
-    //         Thank you for reaching out to us. Our print specialists have received your project details and any artwork you attached.
-    //       </p>
-    //       <p style="line-height: 1.6; color: #334155; margin-bottom: 24px;">
-    //         We are currently reviewing your files to ensure the highest print quality. <strong>We will email you an official quote and digital proof shortly.</strong>
-    //       </p>
-
-    //       <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 24px;">
-    //         <h3 style="margin-top: 0; color: #0f172a; font-size: 16px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">Project Summary</h3>
-    //         <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-    //           <tbody>
-    //             ${itemsHtml}
-    //           </tbody>
-    //         </table>
-    //       </div>
-
-    //       <p style="line-height: 1.6; color: #334155;">
-    //         If you have any immediate questions or need to make a change, simply reply to this email!
-    //       </p>
-    //     </div>
-
-    //     <div style="background-color: #f1f5f9; padding: 20px; text-align: center; color: #64748b; font-size: 12px;">
-    //       <p style="margin: 0;">Maximus Vinyl Wrap & Print</p>
-    //       <p style="margin: 4px 0 0 0;">Oklahoma City, OK</p>
-    //     </div>
-
-    //   </div>
-    // `;
-
     try {
       await this.client.transactionalEmails.sendTransacEmail({
         subject: `Your Print Quote Request is Under Review - Maximus Vinyl`,
