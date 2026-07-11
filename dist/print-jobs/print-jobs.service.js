@@ -118,7 +118,7 @@ let PrintJobsService = PrintJobsService_1 = class PrintJobsService {
                 .from('site_metrics')
                 .select('value')
                 .eq('metric_name', 'visitor_count')
-                .single();
+                .maybeSingle();
             if (error)
                 throw error;
             return data?.value || 0;

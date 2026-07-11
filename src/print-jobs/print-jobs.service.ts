@@ -185,7 +185,7 @@ export class PrintJobsService {
         .from('site_metrics') // Or whatever your underlying key-value table name is
         .select('value')
         .eq('metric_name', 'visitor_count')
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data?.value || 0;
