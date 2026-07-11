@@ -181,19 +181,14 @@ export class SupabaseService {
 
   // 1. Increment via raw RPC or standard upsert logic
   async incrementVisitorCount(name: string): Promise<void> {
-    // We fetch the current value and increment it
-    const { data } = await this.supabase
-      .from('site_metrics')
-      .select('value')
-      .eq('metric_name', name)
-      .single();
+    const { error } = await this.supabase.rpc('increment_site_metric', {
+      metric_target: name,
+    });
 
-    const currentCount = data?.value || 0;
-
-    await this.supabase
-      .from('site_metrics')
-      .update({ value: currentCount + 1 })
-      .eq('metric_name', name);
+    if (error) {
+      this.logger.error(`Failed to increment metric: ${error.message}`);
+      throw error;
+    }
   }
 
   // 2. Read the metric value

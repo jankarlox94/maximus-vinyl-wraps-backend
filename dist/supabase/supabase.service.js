@@ -128,16 +128,13 @@ let SupabaseService = SupabaseService_1 = class SupabaseService {
         return data;
     }
     async incrementVisitorCount(name) {
-        const { data } = await this.supabase
-            .from('site_metrics')
-            .select('value')
-            .eq('metric_name', name)
-            .single();
-        const currentCount = data?.value || 0;
-        await this.supabase
-            .from('site_metrics')
-            .update({ value: currentCount + 1 })
-            .eq('metric_name', name);
+        const { error } = await this.supabase.rpc('increment_site_metric', {
+            metric_target: name,
+        });
+        if (error) {
+            this.logger.error(`Failed to increment metric: ${error.message}`);
+            throw error;
+        }
     }
     async getVisitorCountValue(name) {
         const { data, error } = await this.supabase

@@ -175,9 +175,6 @@ export class PrintJobsService {
     }
   }
 
-  // =========================================================================
-  // NEW: Pulls metrics value down for dashboard processing
-  // =========================================================================
   async getVisitorCount(): Promise<number> {
     try {
       const { data, error } = await this.supabaseService
@@ -186,16 +183,7 @@ export class PrintJobsService {
         .select('value')
         .eq('metric_name', 'visitor_count')
         .maybeSingle();
-      // If it doesn't exist yet, seed the initial row
-      if (!data) {
-        await this.supabaseService
-          .getClient()
-          .from('site_metrics')
-          .insert([{ id: 1, visitor_count: 1 }]);
-      } else {
-        // Otherwise, safely increment it
-        await this.supabaseService.incrementVisitorCount('visitor_count');
-      }
+      // If it doesn't exist yet, seed the initial row in DB
 
       if (error) throw error;
       return data?.value || 0;
