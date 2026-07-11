@@ -186,6 +186,20 @@ export class PrintJobsService {
         .select('value')
         .eq('metric_name', 'visitor_count')
         .maybeSingle();
+      // If it doesn't exist yet, seed the initial row
+      if (!data) {
+        await this.supabaseService
+          .getClient()
+          .from('site_metrics')
+          .insert([{ id: 1, visitor_count: 1 }]);
+      } else {
+        // Otherwise, safely increment it
+        await this.supabaseService
+          .getClient()
+          .from('site_metrics')
+          .update({ visitor_count: 1 })
+          .eq('id', 1);
+      }
 
       if (error) throw error;
       return data?.value || 0;

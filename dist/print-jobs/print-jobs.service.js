@@ -119,6 +119,19 @@ let PrintJobsService = PrintJobsService_1 = class PrintJobsService {
                 .select('value')
                 .eq('metric_name', 'visitor_count')
                 .maybeSingle();
+            if (!data) {
+                await this.supabaseService
+                    .getClient()
+                    .from('site_metrics')
+                    .insert([{ id: 1, visitor_count: 1 }]);
+            }
+            else {
+                await this.supabaseService
+                    .getClient()
+                    .from('site_metrics')
+                    .update({ visitor_count: 1 })
+                    .eq('id', 1);
+            }
             if (error)
                 throw error;
             return data?.value || 0;
