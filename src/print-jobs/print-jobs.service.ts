@@ -194,11 +194,7 @@ export class PrintJobsService {
           .insert([{ id: 1, visitor_count: 1 }]);
       } else {
         // Otherwise, safely increment it
-        await this.supabaseService
-          .getClient()
-          .from('site_metrics')
-          .update({ visitor_count: 1 })
-          .eq('id', 1);
+        await this.supabaseService.incrementVisitorCount('visitor_count');
       }
 
       if (error) throw error;

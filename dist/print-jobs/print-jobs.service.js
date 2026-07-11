@@ -126,11 +126,7 @@ let PrintJobsService = PrintJobsService_1 = class PrintJobsService {
                     .insert([{ id: 1, visitor_count: 1 }]);
             }
             else {
-                await this.supabaseService
-                    .getClient()
-                    .from('site_metrics')
-                    .update({ visitor_count: 1 })
-                    .eq('id', 1);
+                await this.supabaseService.incrementVisitorCount('visitor_count');
             }
             if (error)
                 throw error;
